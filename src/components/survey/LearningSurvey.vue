@@ -43,6 +43,7 @@
         </p>
         <div>
           <base-button>Submit</base-button>
+          <p>{{ error }}</p>
         </div>
       </form>
     </base-card>
@@ -56,7 +57,8 @@ export default {
     return {
       enteredName: '',
       chosenRating: null,
-      invalidInput: false
+      invalidInput: false,
+      error: null
     };
   },
   // emits: ['survey-submit'],
@@ -68,18 +70,20 @@ export default {
       }
       this.invalidInput = false;
 
-      // this.$emit('survey-submit', {
-      //   userName: this.enteredName,
-      //   rating: this.chosenRating,
-      // });
-
-      axios.post(
-        'https://vue-backend-3fdbc-default-rtdb.firebaseio.com/surveys.json',
-        {
-          name: this.enteredName,
-          rating: this.chosenRating
-        }
-      );
+      axios
+        .post(
+          'https://vue-backend-3fdbc-default-rtdb.firebaseio.com/survey.json',
+          {
+            name: this.enteredName,
+            rating: this.chosenRating
+          }
+        )
+        .catch(error => {
+          if (error.response) {
+            throw new Error('could not save');
+          }
+          this.error = error.message;
+        });
 
       this.enteredName = '';
       this.chosenRating = null;
