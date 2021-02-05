@@ -21,10 +21,9 @@
 import SurveyResult from './SurveyResult.vue';
 
 export default {
-  props: ['results'],
   components: {
-    SurveyResult,
-  },
+    SurveyResult
+  }
 };
 </script>
 
